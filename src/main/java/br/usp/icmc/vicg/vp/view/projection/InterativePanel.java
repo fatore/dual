@@ -196,6 +196,7 @@ public class InterativePanel extends GenericPanel {
 
 		@Override
 		public void mouseDragged(java.awt.event.MouseEvent evt) {
+			
 			if (selectedInstance != null) {
 				if (model.hasSelectedInstances()) {
 					TransformationMatrix2D inv = ((ProjectionModel) model).getViewportMatrix().inverse();
@@ -229,7 +230,16 @@ public class InterativePanel extends GenericPanel {
 		public void mouseClicked(java.awt.event.MouseEvent evt) {
 			super.mouseClicked(evt);
 
-			if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+			if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+				if (model != null) {
+					ProjectionInstance instance = ((ProjectionModel) model).getInstanceByPosition(evt.getPoint());
+					if (instance != null) {
+						model.setSelectedInstance(instance);
+						model.notifyObservers();
+					}
+				}
+			}
+			else if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
 				cleanSelectedInstances();
 			}
 		}
@@ -242,8 +252,6 @@ public class InterativePanel extends GenericPanel {
 				if (model != null) {
 					ProjectionInstance instance = ((ProjectionModel) model).getInstanceByPosition(evt.getPoint());
 					if (instance != null) {
-						model.setSelectedInstance(instance);
-						model.notifyObservers();
 						if (moveInstances) {
 							if (model.getSelectedInstances().contains(instance)) {
 								selectedInstance = instance;

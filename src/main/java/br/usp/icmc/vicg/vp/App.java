@@ -21,6 +21,7 @@ public class App {
 	public static void main(String[] args) throws Exception {
 
 		MainView view = new MainView();
+		view.setTitle("Dual Projections");
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.pack();
 		view.setVisible(true);
@@ -38,7 +39,7 @@ public class App {
 		}
 		else {
 			
-			dataMatrix = DataLoader.loadData(DataSets.wine);
+			dataMatrix = DataLoader.loadData(DataSets.iris);
 		}
 		
 		ControllerHandle.getInstance().attachData(dataMatrix, false);

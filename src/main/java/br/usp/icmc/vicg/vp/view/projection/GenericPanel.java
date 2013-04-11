@@ -136,7 +136,6 @@ public class GenericPanel extends JPanel implements ModelViewer {
 		}
 	}
 	
-	@Override
 	public void update(Observable o, Object arg) {
 
 		if (model != null) {
@@ -214,7 +213,7 @@ public class GenericPanel extends JPanel implements ModelViewer {
 	class ResizeListener extends ComponentAdapter {
 		
 		@Override
-		public void componentResized(ComponentEvent arg0) {
+		public void componentResized(ComponentEvent e) {
 			
 			reshapeViewport();
 		}

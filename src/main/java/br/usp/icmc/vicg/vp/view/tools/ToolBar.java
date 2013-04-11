@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
@@ -28,18 +27,17 @@ public class ToolBar extends JPanel {
 		toolBar.setFloatable(false);
 		
 		// Add buttons
-		addreprojectItemsButton();
+		addReprojectItemsButton();
 		
 		// Add tool bar to pane
 		this.add(toolBar);
 	}
 	
-	private void addreprojectItemsButton() {
+	private void addReprojectItemsButton() {
 
 		ToolButton projectSubset = new ToolButton("Project Subset");
 		
 		projectSubset.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				
@@ -50,16 +48,7 @@ public class ToolBar extends JPanel {
 		toolBar.add(projectSubset);
 	}
 
-	class ToolButton extends JButton {
-
-		private static final long serialVersionUID = 1L;
-
-		public ToolButton(String text) {
-
-			this.setText(text);
-		}
-	}
-	
+	@Override
 	public void setBackground(Color color) {
 		
 		super.setBackground(color);

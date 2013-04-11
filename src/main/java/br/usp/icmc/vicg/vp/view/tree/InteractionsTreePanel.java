@@ -3,6 +3,8 @@ package br.usp.icmc.vicg.vp.view.tree;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -49,6 +51,8 @@ public class InteractionsTreePanel extends JPanel {
 		this.htl = new HoverThumbnailListener();
 		this.addMouseMotionListener(htl); 
 		this.addMouseListener(htl);
+		
+		this.addComponentListener(new ResizeListener());
 
 		// Title Label
 		titleLabel = new JLabel("Interactions Tree");
@@ -170,6 +174,18 @@ public class InteractionsTreePanel extends JPanel {
 			vertexThumbnail.setVisible(false);
 			edgeThumbnail.setVisible(false);
 			stillOnVertex = false;
+		}
+	}
+
+	class ResizeListener extends ComponentAdapter {
+		
+		@Override
+		public void componentResized(ComponentEvent e) {
+
+			if (component != null) {
+				
+				component.layoutGraph();
+			}
 		}
 	}
 }

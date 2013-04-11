@@ -108,6 +108,7 @@ public class Controller {
 		
 		// Get current item model
 		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
+		
 		ProjectionModel model = vertex.getDualProjections().getItemsModel();
 		
 		// Create new data matrix
@@ -119,6 +120,8 @@ public class Controller {
 			addVertexToTree((DualProjectionsFactory.getInstance(
 					selectedData, useClass)));
 		}
+		// Clear selection
+		vertex.getDualPanel().getItemsPanel().getProjectionPanel().cleanSelectedInstances();
 	}
 	
 	private AbstractMatrix getSelectedItems(ArrayList<AbstractInstance> selected) {

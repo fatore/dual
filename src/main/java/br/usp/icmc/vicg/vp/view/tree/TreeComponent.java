@@ -1,10 +1,7 @@
 package br.usp.icmc.vicg.vp.view.tree;
 
 import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -15,16 +12,13 @@ import br.usp.icmc.vicg.vp.model.tree.InteractionsTree;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.swing.util.mxMorphing;
-import com.mxgraph.util.mxEvent;
-import com.mxgraph.util.mxEventObject;
-import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.util.mxRectangle;
 
-public class TreeComponent extends mxGraphComponent implements ComponentListener,
-	MouseListener{
+public class TreeComponent extends mxGraphComponent {
 
 	private static final long serialVersionUID = -768829761119011630L;
+	
+	private static final float ZOOM_THRES = 1.25f;
 
 	private mxHierarchicalLayout layout;
 
@@ -41,108 +35,73 @@ public class TreeComponent extends mxGraphComponent implements ComponentListener
 		this.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.getGraphControl().addComponentListener(this);
-		this.getGraphControl().addMouseListener(this);
+		this.getGraphControl().addMouseListener(new ChangeContextListener());
 	}
 
-	public void resizeComponent() {
+	public void fitToScreen() {
 
-		mxRectangle actualBounds = getGraph().getGraphBounds();
+		mxRectangle graphBounds = getGraph().getGraphBounds();
 		Rectangle visibleBounds = getViewport().getVisibleRect();
 
 		float widthRatio = (float) (visibleBounds.getWidth() / 
-				actualBounds.getWidth());
+				graphBounds.getWidth());
 
 		float heigthRatio = (float) (visibleBounds.getHeight() / 
-				actualBounds.getHeight());
+				graphBounds.getHeight());
 
-		if (widthRatio > 1 && heigthRatio > 1) {
+		if (widthRatio > ZOOM_THRES && heigthRatio > ZOOM_THRES) {
 
 			zoomActual();
 		}
 		else {
 
 			float factor = Math.min(widthRatio, heigthRatio);
-			factor = factor * 0.95f;
 			zoom(factor);
 		}
 	}
 
 	public void layoutGraph() {
-
+		
 		getGraph().getModel().beginUpdate();
 		try {
 			layout.execute(getGraph().getDefaultParent());
 		} finally {
 
 			getGraph().getModel().endUpdate();
-			resizeComponent();
 		}
+		fitToScreen();
 	}
 
-	public void morphingLayoutGraph() {
+	class ChangeContextListener extends MouseAdapter {
 
-		getGraph().getModel().beginUpdate();
-		try {
-			layout.execute(getGraph().getDefaultParent());
-		} finally {
-			mxMorphing morph = new mxMorphing(this);
+		private void changeContextTo(Object cell) {
+			
+			if (cell != null) {
+				
+				if (cell instanceof mxCell) {
 
-			morph.addListener(mxEvent.DONE, new mxIEventListener() {
+					if (((mxCell) cell).isVertex()) {
 
-				@Override
-				public void invoke(Object arg0, mxEventObject arg1) {
-
-					resizeComponent();
-				}
-			});
-			morph.startAnimation();
-			getGraph().getModel().endUpdate();
-		}
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-		Object cell = getCellAt(e.getX(), e.getY());
-
-		if (cell != null)
-		{
-			if (cell instanceof mxCell) {
-
-				if (((mxCell) cell).isVertex()) {
-
-					Integer value = (Integer) getGraph().getModel().getValue(cell);
-					ControllerHandle.getInstance().changeContextToVertex(value);
+						Integer value = (Integer) getGraph().getModel().getValue(cell);
+						ControllerHandle.getInstance().changeContextToVertex(value);
+					}
 				}
 			}
 		}
+		
+		@Override
+		public void mouseReleased(java.awt.event.MouseEvent e) {
+			
+			mouseClicked(e);
+		}
+		
+		@Override
+		public void mouseClicked(java.awt.event.MouseEvent e) {
+
+			if (e.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+
+				changeContextTo(getCellAt(e.getX(), e.getY()));
+			}
+		}
 	}
-	
-	@Override
-	public void componentResized(ComponentEvent e) {
-
-		layoutGraph();
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
 }

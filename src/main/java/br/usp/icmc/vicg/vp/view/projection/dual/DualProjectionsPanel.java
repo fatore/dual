@@ -61,11 +61,11 @@ public class DualProjectionsPanel extends JPanel {
 		}
 	}
 
-	public JPanel getItemsPanel() {
+	public RichProjectionPanel getItemsPanel() {
 		return itemsPanel;
 	}
 
-	public JPanel getDimsPanel() {
+	public RichProjectionPanel getDimsPanel() {
 		return dimsPanel;
 	}
 }
