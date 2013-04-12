@@ -68,4 +68,10 @@ public class DualProjectionsPanel extends JPanel {
 	public RichProjectionPanel getDimsPanel() {
 		return dimsPanel;
 	}
+	
+	public void clearSelections() {
+		
+		getItemsPanel().getProjectionPanel().cleanSelectedInstances();
+		getDimsPanel().getProjectionPanel().cleanSelectedInstances();
+	}
 }

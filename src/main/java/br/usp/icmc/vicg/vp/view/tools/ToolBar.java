@@ -42,7 +42,7 @@ public class ToolBar extends JPanel {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				
-				ControllerHandle.getInstance().reprojectItems();
+				ControllerHandle.getInstance().reprojectSubset();
 			}
 		});
 
@@ -57,7 +57,7 @@ public class ToolBar extends JPanel {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				
-				ControllerHandle.getInstance().selectFeatures();
+				ControllerHandle.getInstance().reprojectSubset();
 			}
 		});
 		

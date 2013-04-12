@@ -11,12 +11,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import visualizationbasics.model.AbstractInstance;
-
+import br.usp.icmc.vicg.vp.model.projection.DualProjections;
 
 import matrix.AbstractVector;
 import matrix.dense.DenseMatrix;
 import matrix.dense.DenseVector;
+import visualizationbasics.model.AbstractInstance;
 
 public class DataMatrix extends DenseMatrix {
 
@@ -28,6 +28,11 @@ public class DataMatrix extends DenseMatrix {
 	private Integer classIndex;
 	private String classLabel;
 	private Set<Integer> ignoreIndices;
+	
+	public DataMatrix() {
+		
+		super();
+	}
 
 	public DataMatrix(DataSet dataset) {
 
@@ -165,43 +170,50 @@ public class DataMatrix extends DenseMatrix {
 		}
 	}
 	
-	public DenseMatrix getItemsSubset(ArrayList<AbstractInstance> selected) {
+	public DataMatrix getDualSubset(DualProjections dualProjections) {
 		
-		DenseMatrix selectedData = new DenseMatrix();
+		ArrayList<AbstractInstance> itemsSelected = dualProjections.
+				getItemsModel().getSelectedInstances();
 		
-		if (selected.isEmpty()) {
+		ArrayList<AbstractInstance> dimsSelected = dualProjections.
+				getDimensionsModel().getSelectedInstances();
+		
+		if (itemsSelected.isEmpty() && dimsSelected.isEmpty()) {
 			
 			return null;
-		}
-		
-		for (AbstractInstance inst : selected) {
+		} 
+		else if (itemsSelected.isEmpty()) {
 			
-			Integer id = inst.getId();
-			AbstractVector row = this.getRow(id);
-			selectedData.addRow(row, this.getLabel(id));
+			itemsSelected = dualProjections.getItemsModel().getInstances();
 		}
-		selectedData.setAttributes(this.getAttributes());
-		
-		return selectedData;
-	}
-	
-	public DenseMatrix getDimensionSubset(ArrayList<AbstractInstance> selected) {
-		
-		DenseMatrix selectedData = new DenseMatrix();
-		
-		if (selected.isEmpty()) {
+		else if (dimsSelected.isEmpty()) {
 			
-			return null;
+			dimsSelected = dualProjections.getDimensionsModel().getInstances();
 		}
 		
-		for (AbstractInstance inst : selected) {
+		DataMatrix selectedData = new DataMatrix();
+
+		// For each selected row
+		for (AbstractInstance ai : itemsSelected) {
 			
-			Integer id = inst.getId();
-			AbstractVector row = this.getRow(id);
-			selectedData.addRow(row, this.getLabel(id));
+			DenseVector v = (DenseVector) this.getRow(ai.getId());
+			
+			float[] values = new float[dimsSelected.size()];
+			for (int i = 0; i < values.length; i++) {
+
+				values[i] = v.getValue(dimsSelected.get(i).getId());
+			}
+			DenseVector newVector = new DenseVector(values,v.getId(),v.getKlass());
+			selectedData.addRow(newVector, this.getLabel(v.getId()));
 		}
-		selectedData.setAttributes(this.getAttributes());
-		
+
+		ArrayList<String> selAttributes = new ArrayList<>();
+		for (int i = 0; i < dimsSelected.size(); i++) {
+			
+			selAttributes.add(this.getAttributes().get(dimsSelected.get(i).getId()));
+		}
+		selectedData.setAttributes(selAttributes);
+
 		return selectedData;
 	}
 }

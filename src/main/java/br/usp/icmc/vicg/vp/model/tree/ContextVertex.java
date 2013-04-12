@@ -18,6 +18,10 @@ public class ContextVertex extends AbstractVertex {
 		
 		this.dualProjections = dualProjections;
 		this.dualPanel = dualPanel;
+		
+		System.out.println("Number of items: " + dualProjections.getItemsModel().getInstances().size());
+		System.out.println("Number of dims: " + dualProjections.getDimensionsModel().getInstances().size());
+		System.out.println();
 	}
 
 	public DualProjections getDualProjections() {
@@ -27,7 +31,7 @@ public class ContextVertex extends AbstractVertex {
 	public DualProjectionsPanel getDualPanel() {
 		return dualPanel;
 	}
-
+	
 	@Override
 	public void createThumbnail() {
 		
