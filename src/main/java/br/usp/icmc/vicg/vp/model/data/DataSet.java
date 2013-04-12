@@ -6,14 +6,16 @@ public class DataSet {
 	private Integer labelIndex; 
 	private Integer classIndex;
 	private Integer[] ignoreIndices;
+	private boolean useClass;
 	
 	public DataSet(String filename, Integer labelIndex, Integer classIndex,
-			Integer[] ignoreIndices) {
+			Integer[] ignoreIndices, boolean useClass) {
 		
 		this.filename = filename;
 		this.labelIndex = labelIndex;
 		this.classIndex = classIndex;
 		this.ignoreIndices = ignoreIndices;
+		this.useClass = useClass;
 	}
 	
 	public DataSet(String filename, Integer ignored) {
@@ -38,5 +40,9 @@ public class DataSet {
 
 	public Integer[] getIgnoreIndices() {
 		return ignoreIndices;
+	}
+
+	public boolean isUseClass() {
+		return useClass;
 	}
 }

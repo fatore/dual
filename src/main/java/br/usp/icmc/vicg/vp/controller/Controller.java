@@ -28,9 +28,7 @@ public class Controller {
 	// Dual Panel Slot
 	private JPanel dualPanelSlot;
 
-	private boolean useClass;
-
-	public void initView(JPanel toolbarSlot, JPanel dualPanelSlot,
+	public void init(JPanel toolbarSlot, JPanel dualPanelSlot,
 			JPanel treePanelSlot) {
 
 		// Tool bar
@@ -48,17 +46,16 @@ public class Controller {
 		treePanelSlot.validate();
 	}
 
-	public void attachData(DataMatrix dataMatrix, boolean useClass) {
+	public void attachData(DataMatrix dataMatrix) {
 
 		this.dataMatrix = dataMatrix;
-		this.useClass = useClass;
 
 		tree = new InteractionsTree();
 		treePanel.attach(tree);
 		treePanel.revalidate();
 
 		addVertexToTree(DualProjectionsFactory.getInstance(
-				dataMatrix, useClass));
+				dataMatrix));
 	}
 
 	public void addVertexToTree(DualProjections dualProjections) {
@@ -105,14 +102,12 @@ public class Controller {
 		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
 
 		// Create new data matrix
-		DataMatrix selectedData = dataMatrix.getDualSubset(
-				vertex.getDualProjections());
+		DataMatrix selectedData = dataMatrix.getDualSubset(vertex.getDualProjections());
 
 		if (selectedData != null) {
 
 			// Create and add new projections
-			addVertexToTree((DualProjectionsFactory.getInstance(
-					selectedData, useClass)));
+			addVertexToTree((DualProjectionsFactory.getInstance(selectedData)));
 		}
 		// Clear selection
 		vertex.getDualPanel().clearSelections();

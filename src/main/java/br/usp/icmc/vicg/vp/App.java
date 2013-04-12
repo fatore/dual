@@ -19,7 +19,7 @@ public class App {
 		view.pack();
 		view.setVisible(true);
 
-		ControllerHandle.getInstance().initView(
+		ControllerHandle.getInstance().init(
 				view.getTopPanel(),
 				view.getMiddlePanel(), 
 				view.getBottomPanel());
@@ -35,6 +35,6 @@ public class App {
 			dataMatrix = DataLoader.loadData(DataSets.iris);
 		}
 		
-		ControllerHandle.getInstance().attachData(dataMatrix, false);
+		ControllerHandle.getInstance().attachData(dataMatrix);
 	}
 }

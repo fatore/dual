@@ -9,11 +9,12 @@ public class DualProjections  {
 
 	private ProjectionModel itemsModel;
 	private ProjectionModel dimensionsModel;
+	
+	public DualProjections(AbstractMatrix itemsProj, AbstractMatrix dimsProj,
+			float[] itemsStress, float[] dimStress) {
 
-	public DualProjections(AbstractMatrix itemsProj, AbstractMatrix dimsProj) {
-
-		itemsModel = createProjectionModel(itemsProj);
-		dimensionsModel = createProjectionModel(dimsProj);
+		itemsModel = createProjectionModel(itemsProj, itemsStress);
+		dimensionsModel = createProjectionModel(dimsProj, dimStress);
 	}
 
 	public ProjectionModel getItemsModel() {
@@ -24,11 +25,14 @@ public class DualProjections  {
 		return dimensionsModel;
 	}
 
-	private ProjectionModel createProjectionModel(AbstractMatrix projection) {
+	private ProjectionModel createProjectionModel(AbstractMatrix projection, float[] stress) {
 
 		ProjectionModel projModel = new ProjectionModel();
 		projModel.addProjection(projection, InstanceType.CIRCLED_INSTANCE, 5);
 		projModel.changeColorScaleType(ColorScaleType.ORANGE_TO_BLUESKY);
+		
+		// TODO: add stress as scalas
+		int todo = -1;
 
 		return projModel;
 	}
