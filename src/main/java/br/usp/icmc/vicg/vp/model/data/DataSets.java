@@ -5,6 +5,7 @@ public class DataSets {
 	public static String pexFolder = "D:\\Dropbox\\work\\datasets\\PEX\\";
 	public static String micFolder = "D:\\Dropbox\\work\\datasets\\mic\\";
 	public static String uciFolder = "D:\\Dropbox\\work\\datasets\\uci\\";
+	public static String dataFolder = "data\\";
 	
 	public static String idh = pexFolder + "idh-2006.data";
 	public static String tumor = pexFolder + "primary-tumor.data";
@@ -17,10 +18,10 @@ public class DataSets {
 	public static String microWith = micFolder + "MicrobiomeWithMetadata.csv";
 	
 	public static DataSet iris = new DataSet(
-			uciFolder + "Iris.csv", null, 4, new Integer[]{4});
+			dataFolder + "Iris.csv", null, 4, new Integer[]{4});
 	
 	public static DataSet wine = new DataSet(
-			uciFolder + "wine.csv", null, 13, new Integer[]{13});
+			dataFolder + "wine.csv", null, 13, new Integer[]{13});
 	
 	public static DataSet mlb = new DataSet(
 			micFolder + "MLB2008.csv", 0, 2, new Integer[]{0,1,2});
