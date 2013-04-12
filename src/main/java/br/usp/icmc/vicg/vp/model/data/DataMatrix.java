@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import visualizationbasics.model.AbstractInstance;
+
 
 import matrix.AbstractVector;
 import matrix.dense.DenseMatrix;
@@ -162,4 +164,51 @@ public class DataMatrix extends DenseMatrix {
 			}
 		}
 	}
+	
+	public DenseMatrix getItemsSubset(ArrayList<AbstractInstance> selected) {
+		
+		DenseMatrix selectedData = new DenseMatrix();
+		
+		if (selected.isEmpty()) {
+			
+			return null;
+		}
+		
+		for (AbstractInstance inst : selected) {
+			
+			Integer id = inst.getId();
+			AbstractVector row = this.getRow(id);
+			selectedData.addRow(row, this.getLabel(id));
+		}
+		selectedData.setAttributes(this.getAttributes());
+		
+		return selectedData;
+	}
+	
+	public DenseMatrix getDimensionSubset(ArrayList<AbstractInstance> selected) {
+		
+		DenseMatrix selectedData = new DenseMatrix();
+		
+		if (selected.isEmpty()) {
+			
+			return null;
+		}
+		
+		for (AbstractInstance inst : selected) {
+			
+			Integer id = inst.getId();
+			AbstractVector row = this.getRow(id);
+			selectedData.addRow(row, this.getLabel(id));
+		}
+		selectedData.setAttributes(this.getAttributes());
+		
+		return selectedData;
+	}
 }
+
+
+
+
+
+
+

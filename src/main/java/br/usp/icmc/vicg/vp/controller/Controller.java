@@ -1,15 +1,12 @@
 package br.usp.icmc.vicg.vp.controller;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import matrix.AbstractMatrix;
-import matrix.AbstractVector;
-import matrix.dense.DenseMatrix;
 import projection.model.ProjectionModel;
-import visualizationbasics.model.AbstractInstance;
+import br.usp.icmc.vicg.vp.model.data.DataMatrix;
 import br.usp.icmc.vicg.vp.model.projection.DualProjections;
 import br.usp.icmc.vicg.vp.model.projection.DualProjectionsFactory;
 import br.usp.icmc.vicg.vp.model.tree.ContextVertex;
@@ -21,7 +18,7 @@ import br.usp.icmc.vicg.vp.view.tree.InteractionsTreePanel;
 public class Controller {
 
 	// Data
-	private AbstractMatrix dataMatrix;
+	private DataMatrix dataMatrix;
 	
 	// Models
 	private InteractionsTree tree;
@@ -53,7 +50,7 @@ public class Controller {
 		treePanelSlot.validate();
 	}
 	
-	public void attachData(AbstractMatrix dataMatrix, boolean useClass) {
+	public void attachData(DataMatrix dataMatrix, boolean useClass) {
 		
 		this.dataMatrix = dataMatrix;
 		this.useClass = useClass;
@@ -112,7 +109,8 @@ public class Controller {
 		ProjectionModel model = vertex.getDualProjections().getItemsModel();
 		
 		// Create new data matrix
-		AbstractMatrix selectedData = getSelectedItems(model.getSelectedInstances());
+		AbstractMatrix selectedData = dataMatrix.getItemsSubset(
+				model.getSelectedInstances());
 		
 		if (selectedData != null) {
 			
@@ -121,27 +119,29 @@ public class Controller {
 					selectedData, useClass)));
 		}
 		// Clear selection
-		vertex.getDualPanel().getItemsPanel().getProjectionPanel().cleanSelectedInstances();
+		vertex.getDualPanel().getItemsPanel().getProjectionPanel().
+		cleanSelectedInstances();
 	}
 	
-	private AbstractMatrix getSelectedItems(ArrayList<AbstractInstance> selected) {
+	public void selectFeatures() {
 		
-		DenseMatrix selectedData = new DenseMatrix();
+		// Get current model
+		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
 		
-		if (selected.isEmpty()) {
+		ProjectionModel model = vertex.getDualProjections().getDimensionsModel();
+		
+		// Create new data matrix
+		AbstractMatrix selectedData = dataMatrix.getDimensionSubset(
+				model.getSelectedInstances());
+		
+		if (selectedData != null) {
 			
-			return null;
+			// Create and add new projections
+			addVertexToTree((DualProjectionsFactory.getInstance(
+					selectedData, useClass)));
 		}
-		
-		for (AbstractInstance inst : selected) {
-			
-			Integer id = inst.getId();
-			AbstractVector row = dataMatrix.getRow(id);
-			selectedData.addRow(row, dataMatrix.getLabel(id));
-		}
-		selectedData.setAttributes(dataMatrix.getAttributes());
-		
-		return selectedData;
+		// Clear selection
+		vertex.getDualPanel().getDimsPanel().getProjectionPanel().cleanSelectedInstances();
 	}
 }
 

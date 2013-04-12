@@ -28,6 +28,7 @@ public class ToolBar extends JPanel {
 		
 		// Add buttons
 		addReprojectItemsButton();
+		addSelectFeaturesButton();
 		
 		// Add tool bar to pane
 		this.add(toolBar);
@@ -45,6 +46,21 @@ public class ToolBar extends JPanel {
 			}
 		});
 
+		toolBar.add(projectSubset);
+	}
+	
+	private void addSelectFeaturesButton() {
+		
+		ToolButton projectSubset = new ToolButton("Select Features");
+		
+		projectSubset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				
+				ControllerHandle.getInstance().selectFeatures();
+			}
+		});
+		
 		toolBar.add(projectSubset);
 	}
 

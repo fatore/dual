@@ -50,15 +50,20 @@
 			<artifactId>jgraphx</artifactId>
 			<version>1.10.4.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.efficient-java-matrix-library</groupId>
+			<artifactId>ejml</artifactId>
+			<version>0.22</version>
+		</dependency>
 	</dependencies>
-	
+
 	<repositories>
-        <repository>
-            <id>fatore-releases</id>
-            <url>https://github.com/fatore/maven2/raw/master/releases</url>
-        </repository>
-    </repositories>
-	
+		<repository>
+			<id>fatore-releases</id>
+			<url>https://github.com/fatore/maven2/raw/master/releases</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>

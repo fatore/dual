@@ -2,9 +2,9 @@ package br.usp.icmc.vicg.vp;
 
 import javax.swing.JFrame;
 
-import matrix.AbstractMatrix;
 import br.usp.icmc.vicg.vp.controller.ControllerHandle;
 import br.usp.icmc.vicg.vp.model.data.DataLoader;
+import br.usp.icmc.vicg.vp.model.data.DataMatrix;
 import br.usp.icmc.vicg.vp.model.data.DataSet;
 import br.usp.icmc.vicg.vp.model.data.DataSets;
 import br.usp.icmc.vicg.vp.view.MainView;
@@ -24,7 +24,7 @@ public class App {
 				view.getMiddlePanel(), 
 				view.getBottomPanel());
 		
-		AbstractMatrix dataMatrix = null;
+		DataMatrix dataMatrix = null;
 		if (args.length > 0) {
 		
 			dataMatrix = DataLoader.loadData(new DataSet(args[0],
@@ -32,7 +32,7 @@ public class App {
 		}
 		else {
 			
-			dataMatrix = DataLoader.loadData(DataSets.wine);
+			dataMatrix = DataLoader.loadData(DataSets.iris);
 		}
 		
 		ControllerHandle.getInstance().attachData(dataMatrix, false);
