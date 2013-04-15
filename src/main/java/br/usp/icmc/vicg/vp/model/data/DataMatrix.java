@@ -216,8 +216,11 @@ public class DataMatrix extends DenseMatrix {
 				
 				values[i] = aux.get(i);
 			}
-			DenseVector newVector = new DenseVector(values,v.getId(),v.getKlass());
-			selectedData.addRow(newVector, this.getLabel(v.getId()));
+			if (values.length > 0 ) {
+				
+				DenseVector newVector = new DenseVector(values,v.getId(),v.getKlass());
+				selectedData.addRow(newVector, this.getLabel(v.getId()));
+			}
 		}
 		ArrayList<String> selAttributes = new ArrayList<>();
 		for (AbstractInstance dim : dimsSelected) {
@@ -231,7 +234,14 @@ public class DataMatrix extends DenseMatrix {
 		}
 		selectedData.setAttributes(selAttributes);
 
-		return selectedData;
+		if (selectedData.rows.size() > 0) {
+			
+			return selectedData;
+		}
+		else {
+			
+			return null;
+		}
 	}
 
 	public DataMatrix getTranspose() {
