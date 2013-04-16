@@ -26,17 +26,23 @@ public class App {
 				view.getEastPanel(),
 				view.getEastTopPanel());
 		
-		DataMatrix dataMatrix = null;
+		DataSet dataset = null;
 		if (args.length > 0) {
 		
-			dataMatrix = DataLoader.loadData(new DataSet(args[0],
-					Integer.parseInt(args[1])));
+			switch (args[0]) {
+			
+				case ("iris"): dataset = DataSets.iris; break;
+				case ("wine"): dataset = DataSets.wine; break;
+				
+				default: dataset = DataSets.iris; break;
+			}
 		}
 		else {
 			
-			dataMatrix = DataLoader.loadData(DataSets.wine);
+			dataset = DataSets.iris;
 		}
 		
+		DataMatrix dataMatrix = DataLoader.loadData(dataset);
 		ControllerHandle.getInstance().attachData(dataMatrix);
 	}
 }
