@@ -31,7 +31,7 @@ public class DualProjections  {
 		projModel.addProjection(projection, InstanceType.CIRCLED_INSTANCE, 5);
 		projModel.changeColorScaleType(ColorScaleType.ORANGE_TO_BLUESKY);
 		
-		// TODO: add stress as scalas
+		// TODO: add stress as scalars
 		int todo = -1;
 
 		return projModel;

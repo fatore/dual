@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -271,15 +270,10 @@ public class DataMatrix extends DenseMatrix {
 
 			float[] classCol = new float[newRowLenght];
 
-			float minX = -0.01f;
-			float maxX = 0.01f;
-			Random rand = new Random();
-
 			int i;
 			for (i = 0; i < newRowLenght; i++) {
 
-				float finalX = rand.nextFloat() * (maxX - minX) + minX;
-				classCol[i] = this.getRow(i).getKlass() + finalX;        	
+				classCol[i] = this.getRow(i).getKlass();        	
 			}
 
 			DenseVector newVector = new DenseVector(classCol, tMatrix.getRowCount(), 1.0f);

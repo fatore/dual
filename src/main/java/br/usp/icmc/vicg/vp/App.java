@@ -22,7 +22,9 @@ public class App {
 		ControllerHandle.getInstance().init(
 				view.getTopPanel(),
 				view.getMiddlePanel(), 
-				view.getBottomPanel());
+				view.getBottomPanel(),
+				view.getEastPanel(),
+				view.getEastTopPanel());
 		
 		DataMatrix dataMatrix = null;
 		if (args.length > 0) {
@@ -32,7 +34,7 @@ public class App {
 		}
 		else {
 			
-			dataMatrix = DataLoader.loadData(DataSets.iris);
+			dataMatrix = DataLoader.loadData(DataSets.wine);
 		}
 		
 		ControllerHandle.getInstance().attachData(dataMatrix);

@@ -234,7 +234,11 @@ public class InterativePanel extends GenericPanel {
 				if (model != null) {
 					ProjectionInstance instance = ((ProjectionModel) model).getInstanceByPosition(evt.getPoint());
 					if (instance != null) {
-						model.setSelectedInstance(instance);
+						
+						ArrayList<AbstractInstance> prevSelInst = model.getSelectedInstances();
+						prevSelInst.add(instance);
+						selection.selected(new ArrayList<AbstractInstance>(prevSelInst));
+						
 						model.notifyObservers();
 					}
 				}

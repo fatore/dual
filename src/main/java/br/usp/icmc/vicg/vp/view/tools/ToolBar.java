@@ -27,16 +27,15 @@ public class ToolBar extends JPanel {
 		toolBar.setFloatable(false);
 		
 		// Add buttons
-		addReprojectItemsButton();
-		addSelectFeaturesButton();
+		addSelectSubset();
 		
 		// Add tool bar to pane
 		this.add(toolBar);
 	}
 	
-	private void addReprojectItemsButton() {
+	private void addSelectSubset() {
 
-		ToolButton projectSubset = new ToolButton("Project Subset");
+		ToolButton projectSubset = new ToolButton("Select Subset");
 		
 		projectSubset.addActionListener(new ActionListener() {
 			@Override
@@ -49,21 +48,6 @@ public class ToolBar extends JPanel {
 		toolBar.add(projectSubset);
 	}
 	
-	private void addSelectFeaturesButton() {
-		
-		ToolButton projectSubset = new ToolButton("Select Features");
-		
-		projectSubset.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				
-				ControllerHandle.getInstance().reprojectSubset();
-			}
-		});
-		
-		toolBar.add(projectSubset);
-	}
-
 	@Override
 	public void setBackground(Color color) {
 		
