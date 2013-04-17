@@ -1,6 +1,7 @@
 package br.usp.icmc.vicg.vp.model.projection;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import matrix.AbstractMatrix;
 import distance.DistanceMatrix;
@@ -8,7 +9,7 @@ import distance.dissimilarity.Euclidean;
 
 public class Stress {
 
-	public static float[] getStressByRow(DistanceMatrix dmat, 
+	public static ArrayList<Float> getStressByRow(DistanceMatrix dmat, 
 			AbstractMatrix projection) throws IOException {
 		
 		DistanceMatrix projDmat = new DistanceMatrix(projection, new Euclidean());
@@ -21,7 +22,7 @@ public class Stress {
 					"must have the same number of elements.");
 		}
 		
-		float[] rowsStress = new float[numElements];
+		ArrayList<Float> rowsStress = new ArrayList<>();
 		
 		// Calculate the stress for each element
 		for (int i = 0; i < numElements; i++) {
@@ -35,7 +36,7 @@ public class Stress {
 				stress += Math.abs(dn2);
 			}
 			
-			rowsStress[i] = stress;
+			rowsStress.add(stress);
 		}
 		return rowsStress;
 	}

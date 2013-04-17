@@ -13,7 +13,7 @@ import distance.dissimilarity.Euclidean;
 
 public class OldFrameTest {
 
-	public static void main2(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 
 		AbstractMatrix dataMatrix = DataLoader.loadData(DataSets.iris);
 

@@ -1,5 +1,7 @@
 package br.usp.icmc.vicg.vp.model.projection;
 
+import java.util.ArrayList;
+
 import matrix.AbstractMatrix;
 import projection.model.ProjectionModel;
 import projection.model.ProjectionModel.InstanceType;
@@ -11,7 +13,7 @@ public class DualProjections  {
 	private ProjectionModel dimensionsModel;
 	
 	public DualProjections(AbstractMatrix itemsProj, AbstractMatrix dimsProj,
-			float[] itemsStress, float[] dimStress) {
+			ArrayList<Float> itemsStress, ArrayList<Float> dimStress) {
 
 		itemsModel = createProjectionModel(itemsProj, itemsStress);
 		dimensionsModel = createProjectionModel(dimsProj, dimStress);
@@ -25,15 +27,15 @@ public class DualProjections  {
 		return dimensionsModel;
 	}
 
-	private ProjectionModel createProjectionModel(AbstractMatrix projection, float[] stress) {
+	private ProjectionModel createProjectionModel(AbstractMatrix projection, 
+			ArrayList<Float> stress) {
 
 		ProjectionModel projModel = new ProjectionModel();
 		projModel.addProjection(projection, InstanceType.CIRCLED_INSTANCE, 5);
 		projModel.changeColorScaleType(ColorScaleType.ORANGE_TO_BLUESKY);
 		
-		// TODO: add stress as scalars
-		int todo = -1;
-
+		projModel.addScalar("stress", stress);
+		
 		return projModel;
 	}
 }

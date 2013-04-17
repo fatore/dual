@@ -34,8 +34,8 @@ public class DualProjectionsPanel extends JPanel {
 		
 		this.removeAll();
 		
-		this.add(itemsPanel);
 		this.add(dimsPanel);
+		this.add(itemsPanel);
 	}
 	
 	private RichProjectionPanel createProjectionPanel(ProjectionModel projModel, 

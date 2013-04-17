@@ -114,6 +114,10 @@ public class MainView extends JFrame {
 		mainPanel.setLayout(layout);
 	}
 
+	public JPanel getMainPanel() {
+		return mainPanel; 
+	}
+	
 	public JPanel getTopPanel() {
 		return topPanel;
 	}

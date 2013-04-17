@@ -1,6 +1,7 @@
 package br.usp.icmc.vicg.vp.model.projection;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import matrix.AbstractMatrix;
 import projection.technique.Projection;
@@ -27,8 +28,8 @@ public class DualProjectionsFactory {
 		AbstractMatrix itemsProj = projTech.project(elemDmat);
 		AbstractMatrix dimsProj = projTech.project(dimDmat);
 
-		float[] elemStress = null;
-		float[] dimStress = null;
+		ArrayList<Float> elemStress = null;
+		ArrayList<Float> dimStress = null;
 		try {
 			// Calculate Stress by Row
 			elemStress = Stress.getStressByRow(elemDmat, itemsProj);
