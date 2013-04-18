@@ -23,6 +23,7 @@ public class Controller {
 
 	// Data
 	private DataMatrix data;
+	private DataMatrix tData;
 
 	// Models
 	private InteractionsTree tree;
@@ -59,15 +60,16 @@ public class Controller {
 		resultsTitleSlot.add(resultsPanel.getTitle());
 	}
 
-	public void attachData(DataMatrix data) {
+	public void attachData(DataMatrix data, DataMatrix tData) {
 
 		this.data = data;
+		this.tData = tData;
 
 		tree = new InteractionsTree();
 		treePanel.attach(tree);
 		treePanel.revalidate();
 
-		addVertexToTree(data, false);
+		addVertexToTree(data, tData, false);
 
 		toolBar.attach(((ContextVertex) tree.getCurrentVertex()).getDualProjections().
 				getItemsModel());
@@ -90,7 +92,7 @@ public class Controller {
 		}
 	}
 
-	public void addVertexToTree(DataMatrix data, boolean classify) {
+	public void addVertexToTree(DataMatrix data, DataMatrix tData, boolean classify) {
 
 		int newVertexId = tree.getGraph().getNumVertices() + 1;
 
@@ -108,7 +110,7 @@ public class Controller {
 
 		// Create projections
 		DualProjections dualProjections = DualProjectionsFactory.getInstance(
-				data, currentScalar);
+				data, tData, currentScalar);
 
 		// Create new vertex
 		DualProjectionsPanel dualPanel = createDualPanel(dualProjections);
@@ -180,12 +182,15 @@ public class Controller {
 				selDims = getSelectionIds(
 						vertex.getDualProjections().getDimensionsModel().getInstances());
 			}
+			
 			// Create new data matrix
 			DataMatrix selectedData = data.getSubset(selItems, selDims);
 			selectedData.setClassLabel(data.getClassLabel());
-			selectedData.setIgnoreIndices(data.getIgnoreIndices());
-			selectedData.setShowClass(data.isShowClass());
-			addVertexToTree(selectedData, true);
+			
+			DataMatrix selectedTData = tData.getSubset(selDims, selItems);
+			
+			// Create new transposed data matrix
+			addVertexToTree(selectedData, selectedTData, true);
 		}
 
 		// Clear selection

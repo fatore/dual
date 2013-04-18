@@ -3,7 +3,6 @@ package br.usp.icmc.vicg.vp;
 import javax.swing.JFrame;
 
 import br.usp.icmc.vicg.vp.controller.ControllerHandle;
-import br.usp.icmc.vicg.vp.model.data.DataLoader;
 import br.usp.icmc.vicg.vp.model.data.DataMatrix;
 import br.usp.icmc.vicg.vp.model.data.DataSet;
 import br.usp.icmc.vicg.vp.model.data.DataSets;
@@ -40,9 +39,11 @@ public class App {
 			dataset = DataSets.iris;
 		}
 		
-		DataMatrix data = DataLoader.loadData(dataset);
-		data.setShowClass(true);
+		DataMatrix data = new DataMatrix(dataset);
+		data.load(dataset);
 		
-		ControllerHandle.getInstance().attachData(data);
+		DataMatrix tData = data.getTranspose(true);
+		
+		ControllerHandle.getInstance().attachData(data, tData);
 	}
 }
