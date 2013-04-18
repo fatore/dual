@@ -145,39 +145,34 @@ public class Controller {
 		tree.setCurrentVertex(newCurrent, true);
 	}
 
-	public void reprojectItemsSubset() {
+	public void reprojectSubset() {
 
 		// Get current vertex
 		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
 
 		// Create new data matrix
 		DataMatrix selectedData = DataMatrix.getSubset(
-				data, vertex.getDualProjections().getItemsModel());
+				data, vertex.getDualProjections().getItemsModel().getSelectedInstances());
 
-		selectedData.setClassIndex(data.getClassIndex());
-
-		if (selectedData != null) {
-
-			// Create and add new projections
-			addVertexToTree(selectedData, tData, true);
-		}
-		// Clear selection
-		vertex.getDualPanel().clearSelections();
-	}
-
-	public void reprojectDimsSubset() {
-
-		// Get current vertex
-		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
-
-		// Create new transposed data matrix
-		DataMatrix selectedData = DataMatrix.getSubset(
-				tData, vertex.getDualProjections().getDimensionsModel());
-
-		if (selectedData != null) {
-
-			// Create and add new projections
-			addVertexToTree(data, selectedData, true);
+		
+		DataMatrix selectedTData = DataMatrix.getSubset(
+				tData, vertex.getDualProjections().getDimensionsModel().getSelectedInstances());
+		
+		if (selectedData != null || selectedTData != null) {
+			
+			if (selectedData == null) {
+				
+				selectedData = DataMatrix.getSubset(
+						data, vertex.getDualProjections().getItemsModel().getInstances());
+			}
+			if (selectedTData == null) {
+				
+				selectedTData = DataMatrix.getSubset(
+						tData, vertex.getDualProjections().getDimensionsModel().getInstances());
+			}
+			
+			selectedData.setClassIndex(data.getClassIndex());
+			addVertexToTree(selectedData, selectedTData, true);
 		}
 		// Clear selection
 		vertex.getDualPanel().clearSelections();

@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import matrix.AbstractVector;
 import matrix.dense.DenseMatrix;
 import matrix.dense.DenseVector;
-import projection.model.ProjectionModel;
 import visualizationbasics.model.AbstractInstance;
 
 public class DataMatrix extends DenseMatrix {
@@ -176,9 +175,7 @@ public class DataMatrix extends DenseMatrix {
 		}
 	}
 
-	public static DataMatrix getSubset(DataMatrix data, ProjectionModel model) {
-
-		ArrayList<AbstractInstance> selection = model.getSelectedInstances();
+	public static DataMatrix getSubset(DataMatrix data, ArrayList<AbstractInstance> selection) {
 
 		if (selection.isEmpty()) {
 
@@ -220,7 +217,7 @@ public class DataMatrix extends DenseMatrix {
 		}
 
 		// Use class as a new row
-		if (showClass && classIndex != null && ignoreIndices.contains(classIndex)) {
+		if (classIndex != null && ignoreIndices.contains(classIndex)) {
 
 			float[] classCol = new float[newRowLenght];
 			int i;
@@ -232,7 +229,7 @@ public class DataMatrix extends DenseMatrix {
 			DenseVector newVector = new DenseVector(classCol, tMatrix.getRowCount(), 1.0f);
 			tMatrix.addRow(newVector, classLabel);
 		}
-		if (showClass && classIndex != null && !ignoreIndices.contains(classIndex)) {
+		if (classIndex != null && !ignoreIndices.contains(classIndex)) {
 
 			tMatrix.getRow(classIndex).setKlass(1.0f);
 		}

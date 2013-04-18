@@ -39,24 +39,20 @@ public class ToolBar extends JPanel {
 		toolBar = new JPanel();
 
 		// Create elements
-		JButton itemsSubsetButton = createItemsSubsetButton();
+		JButton subsetButton = createSubsetButton();
 		
-		JButton dimsSubsetButton = createDimsSubsetButton();
-
 		scalarComboBox = createScalarComboBox();
 		toolBar.add(scalarComboBox);
 
 		GroupLayout layout = new GroupLayout(toolBar);
 
 		GroupLayout.ParallelGroup vGroup = layout.createParallelGroup();
-		vGroup.addComponent(itemsSubsetButton).
-		addComponent(dimsSubsetButton).
+		vGroup.addComponent(subsetButton).
 		addComponent(scalarComboBox);
 		layout.setVerticalGroup(vGroup);
 
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-		hGroup.addComponent(itemsSubsetButton).
-		addComponent(dimsSubsetButton).
+		hGroup.addComponent(subsetButton).
 		addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).
 		addComponent(scalarComboBox);
 		layout.setHorizontalGroup(hGroup);
@@ -67,40 +63,23 @@ public class ToolBar extends JPanel {
 		this.add(toolBar, new GridBagConstraints());
 	}
 
-	private ToolButton createItemsSubsetButton() {
+	private ToolButton createSubsetButton() {
 
 		ToolButton projectSubset = new ToolButton(
-				"<html><center>Select<br/>Items</center></html>",
-				"Select Items");
+				"<html><center>Select<br/>Subset</center></html>",
+				"Select items or (and) dimensions subset.");
 
 		projectSubset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-				ControllerHandle.getInstance().reprojectItemsSubset();
+				ControllerHandle.getInstance().reprojectSubset();
 			}
 		});
 
 		return projectSubset;
 	}
 	
-	private ToolButton createDimsSubsetButton() {
-
-		ToolButton projectSubset = new ToolButton(
-				"<html><center>Select<br/>Dims</center></html>",
-				"Select Dimensions");
-
-		projectSubset.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-				ControllerHandle.getInstance().reprojectDimsSubset();
-			}
-		});
-
-		return projectSubset;
-	}
-
 	private JComboBox<Scalar> createScalarComboBox() {
 
 		JComboBox<Scalar> scalarComboBox = new JComboBox<>();
