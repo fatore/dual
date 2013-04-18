@@ -18,6 +18,6 @@ public class ToolButton extends JButton {
 		
 		this.setMaximumSize(new Dimension(ViewParameters.MAX_SIZE, ViewParameters.BUTTONS_HEIGHT));
 		this.setMinimumSize(new Dimension(0, ViewParameters.BUTTONS_HEIGHT));
-		this.setFont(new Font(null, Font.BOLD, 12));
+		this.setFont(new Font(null, Font.BOLD, 11));
 	}
 }
