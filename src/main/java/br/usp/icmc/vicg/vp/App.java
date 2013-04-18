@@ -41,8 +41,8 @@ public class App {
 		}
 		
 		DataMatrix data = DataLoader.loadData(dataset);
-		DataMatrix tData = data.getTranspose(true);
+		data.setShowClass(true);
 		
-		ControllerHandle.getInstance().attachData(data, tData);
+		ControllerHandle.getInstance().attachData(data);
 	}
 }

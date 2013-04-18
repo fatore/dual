@@ -14,9 +14,10 @@ import distance.dissimilarity.Euclidean;
 
 public class DualProjectionsFactory {
 
-	public static DualProjections getInstance(DataMatrix data, 
-			DataMatrix tData, String scalarName) {
+	public static DualProjections getInstance(DataMatrix data, String scalarName) {
 
+		DataMatrix tData = data.getTranspose();
+		
 		// Create Distance Matrices
 		DistanceMatrix elemDmat = new DistanceMatrix(data, new Euclidean());
 		DimensionsDistanceMatrix dimDmat = new DimensionsDistanceMatrix(tData, new MIC());
