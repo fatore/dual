@@ -36,7 +36,7 @@ public class App {
 		}
 		else {
 			
-			dataset = DataSets.iris;
+			dataset = DataSets.wine;
 		}
 		
 		DataMatrix data = new DataMatrix(dataset);

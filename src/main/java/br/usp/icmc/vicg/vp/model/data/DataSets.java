@@ -18,7 +18,7 @@ public class DataSets {
 	public static String microWith = micFolder + "MicrobiomeWithMetadata.csv";
 	
 	public static DataSet iris = new DataSet(
-			dataFolder + "Iris.csv", null, null, new Integer[]{});
+			dataFolder + "Iris.csv", null, 4, new Integer[]{4});
 	
 	public static DataSet wine = new DataSet(
 			dataFolder + "wine.csv", null, 13, new Integer[]{13});

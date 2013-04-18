@@ -52,6 +52,10 @@ public class DataMatrix extends DenseMatrix {
 		return classLabel;
 	}
 
+	public Integer getClassIndex() {
+		return classIndex;
+	}
+
 	public void setClassIndex(Integer classIndex) {
 		this.classIndex = classIndex;
 	}
@@ -191,22 +195,32 @@ public class DataMatrix extends DenseMatrix {
 		}
 
 		if (addClass) {
+
 			if (classIndex != null) {
-	
+
 				if (ignoredCols.contains(classIndex)) {
-	
+
 					float[] classCol = new float[newRowLenght];
 					int i;
 					for (i = 0; i < newRowLenght; i++) {
-	
+
 						classCol[i] = this.getRow(i).getKlass();        	
 					}
-	
+
 					DenseVector newVector = new DenseVector(classCol, tMatrix.getRowCount(), 1.0f);
 					tMatrix.addRow(newVector, classLabel);
 				}
 				else {
-	
+
+					tMatrix.getRow(classIndex).setKlass(1.0f);
+				}
+			}
+		} else {
+
+			if (classIndex != null) {
+
+				if (!ignoredCols.contains(classIndex)) {
+
 					tMatrix.getRow(classIndex).setKlass(1.0f);
 				}
 			}
@@ -214,82 +228,96 @@ public class DataMatrix extends DenseMatrix {
 		return tMatrix;
 	}
 
-	public DataMatrix getSubset(ArrayList<Integer> selItems, 
-			ArrayList<Integer> selDims) {
+	public DataMatrix getItemsSubset(ArrayList<Integer> selRows, 
+			ArrayList<Integer> selCols) {
 
-		//		DataMatrix selectedData = new DataMatrix();
-		//		
-		//		boolean containsClass = false;
-		//		for (Integer dimId : selDims) {
-		//			
-		//			if(dimId.equals(this.classIndex)) {
-		//				
-		//				containsClass = true;
-		//			}
-		//		}
-		//
-		//		// If class is set but is ignored, then ignore
-		//		boolean ignoredClass = this.classIndex != null && 
-		//				this.ignoreIndices.contains(this.classIndex);
-		//
-		//		int newSize = selDims.size();
-		//		if (ignoredClass) newSize--;
-		//
-		//		// For each selected row
-		//		for (Integer itemId : selItems) {
-		//
-		//			DenseVector row = (DenseVector) this.getRow(itemId);
-		//
-		//			float[] values = new float[newSize];
-		//			int i = 0;
-		//			for (Integer dimId : selDims) {
-		//
-		//				// if its not the class
-		//				if (!dimId.equals(this.classIndex)) {
-		//
-		//					values[i] = row.getValue(dimId);
-		//					i++;
-		//				} 
-		//				// is the class
-		//				else {
-		//
-		//					// if class shouldn't be ignored
-		//					if (!ignoredClass) {
-		//
-		//						values[i] = row.getValue(dimId);
-		//						i++;
-		//					}
-		//				}
-		//			}
-		//
-		//			DenseVector vector = new DenseVector(values, row.getId(), row.getKlass());
-		//			selectedData.addRow(vector, this.getLabel(vector.getId()));
-		//		}
-		//		if (containsClass) {
-		//			
-		//			selectedData.setClassIndex(this.classIndex);
-		//		}
-		//		else {
-		//			
-		//			selectedData.setClassIndex(null);
-		//		}
-		//		for (Integer dimId : selDims) {
-		//
-		//			if (ignoredClass) {
-		//
-		//				// add only if its not class
-		//				if (!dimId.equals(this.classIndex)) {
-		//
-		//					selectedData.getAttributes().add(this.getAttributes().get(dimId));
-		//				}
-		//			}
-		//		}
-		//		return selectedData;
-		return null;
+		DataMatrix selectedData = new DataMatrix();
+
+		// Check if class was selected
+		boolean classSelected = false;
+		for(Integer dimId : selCols) {
+
+			if (dimId.equals(this.classIndex)) {
+
+				classSelected = true;
+				break;
+			}
+		}
+
+		boolean classAdded = classSelected && this.ignoredCols.contains(this.classIndex);
+		// Okay, now check if it was added or was already there
+		
+		int valuesSize = selCols.size();
+		if (classAdded) valuesSize--;
+
+		for(Integer rowId : selRows) {
+
+			DenseVector row = (DenseVector) this.getRow(rowId);
+			float[] values = new float[valuesSize];
+
+			int pos = 0;
+			for(Integer dimId : selCols) {
+
+				// if class was added ignored it
+				if (classAdded) {
+
+					if (!dimId.equals(this.classIndex)) {
+
+						values[pos++] = row.getValue(dimId);
+					}
+				}
+				// else add anyway
+				else {
+
+					values[pos++] = row.getValue(dimId);
+				}
+			}
+
+			DenseVector newRow = new DenseVector(values, row.getId(), row.getKlass());
+			selectedData.addRow(newRow, this.getLabel(row.getId()));
+		}
+		for (Integer colId : selCols) {
+
+			if (classAdded) {
+
+				// if class was added ignored it
+				if (!colId.equals(this.classIndex)) {
+
+					selectedData.getAttributes().add(this.getAttributes().get(colId));
+				}
+			}
+			// else add anyway
+			else {
+
+				selectedData.getAttributes().add(this.getAttributes().get(colId));
+			}
+
+		}
+
+		return selectedData;
 	}
 
-	public Integer getClassIndex() {
-		return classIndex;
+	public DataMatrix getDimsSubset(ArrayList<Integer> selRows, 
+			ArrayList<Integer> selCols) {
+
+		DataMatrix selectedData = new DataMatrix();
+
+		for(Integer rowId : selRows) {
+
+			DenseVector row = (DenseVector) this.getRow(rowId);
+			float[] values = new float[selCols.size()];
+
+			int pos = 0;
+			for(Integer dimId : selCols) {
+
+				values[pos++] = row.getValue(dimId);
+			}
+
+			DenseVector newRow = new DenseVector(values, row.getId(), row.getKlass());
+			selectedData.addRow(newRow, this.getLabel(row.getId()));
+		}
+
+		return selectedData;
 	}
 }
 

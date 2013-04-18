@@ -96,7 +96,7 @@ public class Controller {
 
 		int newVertexId = tree.getGraph().getNumVertices() + 1;
 
-		if (classify && data.getClassIndex() != null) {
+		if (classify && this.data.getClassIndex() != null) {
 
 			try {
 
@@ -183,13 +183,9 @@ public class Controller {
 						vertex.getDualProjections().getDimensionsModel().getInstances());
 			}
 			
-			// Create new data matrix
-			DataMatrix selectedData = data.getSubset(selItems, selDims);
-			selectedData.setClassLabel(data.getClassLabel());
+			DataMatrix selectedData = data.getItemsSubset(selItems, selDims);
+			DataMatrix selectedTData = tData.getDimsSubset(selDims, selItems);
 			
-			DataMatrix selectedTData = tData.getSubset(selDims, selItems);
-			
-			// Create new transposed data matrix
 			addVertexToTree(selectedData, selectedTData, true);
 		}
 
