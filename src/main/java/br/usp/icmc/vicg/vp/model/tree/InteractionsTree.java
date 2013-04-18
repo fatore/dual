@@ -36,6 +36,10 @@ public class InteractionsTree {
 		return currentVertex;
 	}
 	
+	public ArrayList<AbstractVertex> getVertices() {
+		return vertices;
+	}
+
 	public void addNewVertex(AbstractVertex newVertex) {
 
 		graph.getModel().beginUpdate();

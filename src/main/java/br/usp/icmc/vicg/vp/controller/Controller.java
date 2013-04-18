@@ -4,10 +4,12 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
+import projection.model.ProjectionModel;
 import br.usp.icmc.vicg.vp.model.data.DataMatrix;
 import br.usp.icmc.vicg.vp.model.ml.ResultFactory;
 import br.usp.icmc.vicg.vp.model.projection.DualProjections;
 import br.usp.icmc.vicg.vp.model.projection.DualProjectionsFactory;
+import br.usp.icmc.vicg.vp.model.tree.AbstractVertex;
 import br.usp.icmc.vicg.vp.model.tree.ContextVertex;
 import br.usp.icmc.vicg.vp.model.tree.InteractionsTree;
 import br.usp.icmc.vicg.vp.view.ml.ResultsPanel;
@@ -18,7 +20,8 @@ import br.usp.icmc.vicg.vp.view.tree.InteractionsTreePanel;
 public class Controller {
 
 	// Data
-	private DataMatrix dataMatrix;
+	private DataMatrix data;
+	private DataMatrix tData;
 
 	// Models
 	private InteractionsTree tree;
@@ -30,6 +33,8 @@ public class Controller {
 	private ToolBar toolBar;
 	private InteractionsTreePanel treePanel;
 	private ResultsPanel resultsPanel;
+
+	private String currentScalar;
 
 	public void init(JPanel toolbarSlot, JPanel dualPanelSlot,
 			JPanel treePanelSlot, JPanel resultsPanelSlot, JPanel resultsTitleSlot) {
@@ -48,30 +53,36 @@ public class Controller {
 		treePanelSlot.add(treePanel);
 		treePanelSlot.validate();
 
-		// Results panel
 		this.resultsPanel = new ResultsPanel();
 		resultsPanelSlot.add(resultsPanel);
-
 		resultsTitleSlot.add(resultsPanel.getTitle());
 	}
 
-	public void attachData(DataMatrix dataMatrix) {
+	public void attachData(DataMatrix data, DataMatrix tData) {
 
-		this.dataMatrix = dataMatrix;
+		this.data = data;
+		this.tData = tData;
 
 		tree = new InteractionsTree();
 		treePanel.attach(tree);
 		treePanel.revalidate();
 
-		addVertexToTree(dataMatrix, false);
+		addVertexToTree(data, tData, false);
 
-		initResults(dataMatrix);
+		toolBar.attach(((ContextVertex) tree.getCurrentVertex()).getDualProjections().
+				getItemsModel());
+
+		initResults(data);
 	}
 
-	private void initResults(DataMatrix dataMatrix) {
+	private void initResults(DataMatrix data) {
 
 		try {
-			resultsPanel.addRow(ResultFactory.getInstance(dataMatrix,"None"));
+			// Results panel
+			if (data.getClassIndex() != null) {
+
+				resultsPanel.addRow(ResultFactory.getInstance(data,"None"));
+			}
 
 		} catch (Exception e) {
 
@@ -79,23 +90,25 @@ public class Controller {
 		}
 	}
 
-	public void addVertexToTree(DataMatrix dataMatrix, boolean runClass) {
-		
+	public void addVertexToTree(DataMatrix data, DataMatrix tData, boolean classify) {
+
 		int newVertexId = tree.getGraph().getNumVertices() + 1;
-		
-		if (runClass) {
-			
+
+		if (classify && data.getClassIndex() != null) {
+
 			try {
-				resultsPanel.addRow(ResultFactory.getInstance(
-						dataMatrix,"Dual (" + newVertexId + ")"));
+
+				resultsPanel.addRow(ResultFactory.getInstance(data,
+						"Dual (" + newVertexId + ")"));
 			} catch (Exception e) {
-				
+
 				e.printStackTrace();
 			}
 		}
-		
+
 		// Create projections
-		DualProjections dualProjections = DualProjectionsFactory.getInstance(dataMatrix);
+		DualProjections dualProjections = DualProjectionsFactory.getInstance(
+				data, tData, currentScalar);
 
 		// Create new vertex
 		DualProjectionsPanel dualPanel = createDualPanel(dualProjections);
@@ -132,21 +145,63 @@ public class Controller {
 		tree.setCurrentVertex(newCurrent, true);
 	}
 
-	public void reprojectSubset() {
+	public void reprojectItemsSubset() {
 
-		// Get current item model
+		// Get current vertex
 		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
 
 		// Create new data matrix
-		DataMatrix selectedData = dataMatrix.getDualSubset(vertex.getDualProjections());
+		DataMatrix selectedData = DataMatrix.getSubset(
+				data, vertex.getDualProjections().getItemsModel());
+
+		selectedData.setClassIndex(data.getClassIndex());
 
 		if (selectedData != null) {
 
 			// Create and add new projections
-			addVertexToTree(selectedData, true);
+			addVertexToTree(selectedData, tData, true);
 		}
 		// Clear selection
 		vertex.getDualPanel().clearSelections();
+	}
+
+	public void reprojectDimsSubset() {
+
+		// Get current vertex
+		ContextVertex vertex = (ContextVertex) tree.getCurrentVertex();
+
+		// Create new transposed data matrix
+		DataMatrix selectedData = DataMatrix.getSubset(
+				tData, vertex.getDualProjections().getDimensionsModel());
+
+		if (selectedData != null) {
+
+			// Create and add new projections
+			addVertexToTree(data, selectedData, true);
+		}
+		// Clear selection
+		vertex.getDualPanel().clearSelections();
+	}
+
+	public void changeModelsScalar(String name) {
+
+		this.currentScalar = name;
+
+		for (AbstractVertex v : tree.getVertices()) {
+
+			setModelScalar(((ContextVertex) v).getDualProjections().
+					getDimensionsModel(), name);
+
+			setModelScalar(((ContextVertex) v).getDualProjections().
+					getItemsModel(), name);
+		}
+	}
+
+	private void setModelScalar(ProjectionModel model, String name) {
+
+		model.setSelectedScalar(model.getScalar(name));
+		model.setChanged();
+		model.notifyObservers();
 	}
 }
 

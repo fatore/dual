@@ -14,14 +14,12 @@ import distance.dissimilarity.Euclidean;
 
 public class DualProjectionsFactory {
 
-	public static DualProjections getInstance(DataMatrix dataMatrix) {
+	public static DualProjections getInstance(DataMatrix data, 
+			DataMatrix tData, String scalarName) {
 
-		// Create Transpose Matrix
-		DataMatrix tMatrix = dataMatrix.getTranspose();
-		
 		// Create Distance Matrices
-		DistanceMatrix elemDmat = new DistanceMatrix(dataMatrix, new Euclidean());
-		DimensionsDistanceMatrix dimDmat = new DimensionsDistanceMatrix(tMatrix, new MIC());
+		DistanceMatrix elemDmat = new DistanceMatrix(data, new Euclidean());
+		DimensionsDistanceMatrix dimDmat = new DimensionsDistanceMatrix(tData, new MIC());
 
 		// Project data
 		Projection projTech = new ClassicalMDSProjection();
@@ -39,6 +37,6 @@ public class DualProjectionsFactory {
 			
 			System.err.println("ERROR: " + e.getMessage());
 		}
-		return new DualProjections(itemsProj, dimsProj, elemStress, dimStress);
+		return new DualProjections(itemsProj, dimsProj, elemStress, dimStress, scalarName);
 	}
 }

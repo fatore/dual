@@ -13,10 +13,10 @@ public class DualProjections  {
 	private ProjectionModel dimensionsModel;
 	
 	public DualProjections(AbstractMatrix itemsProj, AbstractMatrix dimsProj,
-			ArrayList<Float> itemsStress, ArrayList<Float> dimStress) {
+			ArrayList<Float> itemsStress, ArrayList<Float> dimStress, String scalarName) {
 
-		itemsModel = createProjectionModel(itemsProj, itemsStress);
-		dimensionsModel = createProjectionModel(dimsProj, dimStress);
+		itemsModel = createProjectionModel(itemsProj, itemsStress, scalarName);
+		dimensionsModel = createProjectionModel(dimsProj, dimStress, scalarName);
 	}
 
 	public ProjectionModel getItemsModel() {
@@ -28,13 +28,18 @@ public class DualProjections  {
 	}
 
 	private ProjectionModel createProjectionModel(AbstractMatrix projection, 
-			ArrayList<Float> stress) {
+			ArrayList<Float> stress, String scalarName) {
 
 		ProjectionModel projModel = new ProjectionModel();
 		projModel.addProjection(projection, InstanceType.CIRCLED_INSTANCE, 5);
 		projModel.changeColorScaleType(ColorScaleType.ORANGE_TO_BLUESKY);
 		
 		projModel.addScalar("stress", stress);
+		
+		if (scalarName != null) {
+			
+			projModel.setSelectedScalar(projModel.getScalar(scalarName));
+		}
 		
 		return projModel;
 	}

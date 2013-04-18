@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -14,8 +13,8 @@ import java.util.logging.Logger;
 import matrix.AbstractVector;
 import matrix.dense.DenseMatrix;
 import matrix.dense.DenseVector;
+import projection.model.ProjectionModel;
 import visualizationbasics.model.AbstractInstance;
-import br.usp.icmc.vicg.vp.model.projection.DualProjections;
 
 public class DataMatrix extends DenseMatrix {
 
@@ -27,13 +26,10 @@ public class DataMatrix extends DenseMatrix {
 	private Integer classIndex;
 	private String classLabel;
 	private Set<Integer> ignoreIndices;
-	private boolean useClass;
 
-	public DataMatrix(boolean useClass) {
+	public DataMatrix() {
 
 		super();
-		
-		this.useClass = useClass;
 	}
 
 	public DataMatrix(DataSet dataset) {
@@ -44,18 +40,25 @@ public class DataMatrix extends DenseMatrix {
 		this.filename = dataset.getFilename();
 		this.labelIndex = dataset.getLabelIndex();
 		this.classIndex = dataset.getClassIndex();
-		this.useClass = dataset.isUseClass();
 
-		Integer[] ignored = dataset.getIgnoreIndices();
+		ArrayList<Integer> ignored = dataset.getIgnoreIndices();
 		this.ignoreIndices = new HashSet<Integer>();
 		if (ignored != null) {
 
-			this.ignoreIndices.addAll(Arrays.asList(ignored));
+			this.ignoreIndices.addAll(ignored);
 		}
 	}
 
 	public String getClassLabel() {
 		return classLabel;
+	}
+
+	public void setClassIndex(Integer classIndex) {
+		this.classIndex = classIndex;
+	}
+
+	public Set<Integer> getIgnoreIndices() {
+		return ignoreIndices;
 	}
 
 	@Override
@@ -173,83 +176,34 @@ public class DataMatrix extends DenseMatrix {
 		}
 	}
 
-	public DataMatrix getDualSubset(DualProjections dualProjections) {
+	public static DataMatrix getSubset(DataMatrix data, ProjectionModel model) {
 
-		ArrayList<AbstractInstance> itemsSelected = dualProjections.
-				getItemsModel().getSelectedInstances();
+		ArrayList<AbstractInstance> selection = model.getSelectedInstances();
 
-		ArrayList<AbstractInstance> dimsSelected = dualProjections.
-				getDimensionsModel().getSelectedInstances();
-
-		if (itemsSelected.isEmpty() && dimsSelected.isEmpty()) {
+		if (selection.isEmpty()) {
 
 			return null;
-		} 
-		else if (itemsSelected.isEmpty()) {
-
-			itemsSelected = dualProjections.getItemsModel().getInstances();
-		}
-		else if (dimsSelected.isEmpty()) {
-
-			dimsSelected = dualProjections.getDimensionsModel().getInstances();
 		}
 
-		DataMatrix selectedData = new DataMatrix(useClass);
+		DataMatrix selectedData = new DataMatrix();
 
 		// For each selected row
-		for (AbstractInstance item : itemsSelected) {
+		for (AbstractInstance item : selection) {
 
-			DenseVector v = (DenseVector) this.getRow(item.getId());
-			ArrayList<Float> aux = new ArrayList<>();
-			for (AbstractInstance dim : dimsSelected) {
-				
-				int desiredColumn = dim.getId();
-				// Check if is not the class column
-				if (desiredColumn < v.size()) {
-					
-					aux.add(v.getValue(dim.getId()));
-				}
-			}
-			float[] values = new float[aux.size()];
-			for (int i = 0; i < values.length; i++) {
-				
-				values[i] = aux.get(i);
-			}
-			if (values.length > 0 ) {
-				
-				DenseVector newVector = new DenseVector(values,v.getId(),v.getKlass());
-				selectedData.addRow(newVector, this.getLabel(v.getId()));
-			}
+			DenseVector vector = (DenseVector) data.getRow(item.getId());
+			selectedData.addRow(vector, data.getLabel(vector.getId()));
 		}
-		ArrayList<String> selAttributes = new ArrayList<>();
-		for (AbstractInstance dim : dimsSelected) {
-			
-			int desiredColumn = dim.getId();
-			// Check if is not the class column
-			if (desiredColumn < dimensions) {
-				
-				selAttributes.add(this.getAttributes().get(dim.getId()));
-			}
-		}
-		selectedData.setAttributes(selAttributes);
+		selectedData.setAttributes(data.getAttributes());
 
-		if (selectedData.rows.size() > 0) {
-			
-			return selectedData;
-		}
-		else {
-			
-			return null;
-		}
+		return selectedData;
 	}
 
-	public DataMatrix getTranspose() {
+	public DataMatrix getTranspose(boolean showClass) {
 
 		float[][] points = this.toMatrix();
-
 		int newRowLenght = points.length; 
 
-		DataMatrix tMatrix = new DataMatrix(useClass);
+		DataMatrix tMatrix = new DataMatrix();
 
 		// Fill vector
 		for (int i = 0; i < this.getDimensions(); i++) {
@@ -266,10 +220,9 @@ public class DataMatrix extends DenseMatrix {
 		}
 
 		// Use class as a new row
-		if (useClass) {
+		if (showClass && classIndex != null && ignoreIndices.contains(classIndex)) {
 
 			float[] classCol = new float[newRowLenght];
-
 			int i;
 			for (i = 0; i < newRowLenght; i++) {
 
@@ -277,9 +230,18 @@ public class DataMatrix extends DenseMatrix {
 			}
 
 			DenseVector newVector = new DenseVector(classCol, tMatrix.getRowCount(), 1.0f);
-			tMatrix.addRow(newVector, "Class");
+			tMatrix.addRow(newVector, classLabel);
 		}
+		if (showClass && classIndex != null && !ignoreIndices.contains(classIndex)) {
+
+			tMatrix.getRow(classIndex).setKlass(1.0f);
+		}
+
 		return tMatrix;
+	}
+
+	public Integer getClassIndex() {
+		return classIndex;
 	}
 }
 

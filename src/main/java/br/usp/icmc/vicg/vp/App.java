@@ -33,8 +33,6 @@ public class App {
 			
 				case ("iris"): dataset = DataSets.iris; break;
 				case ("wine"): dataset = DataSets.wine; break;
-				
-				default: dataset = DataSets.iris; break;
 			}
 		}
 		else {
@@ -42,7 +40,9 @@ public class App {
 			dataset = DataSets.iris;
 		}
 		
-		DataMatrix dataMatrix = DataLoader.loadData(dataset);
-		ControllerHandle.getInstance().attachData(dataMatrix);
+		DataMatrix data = DataLoader.loadData(dataset);
+		DataMatrix tData = data.getTranspose(true);
+		
+		ControllerHandle.getInstance().attachData(data, tData);
 	}
 }

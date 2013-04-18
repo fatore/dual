@@ -1,31 +1,24 @@
 package br.usp.icmc.vicg.vp.model.data;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class DataSet {
 
 	private String filename;
 	private Integer labelIndex; 
 	private Integer classIndex;
-	private Integer[] ignoreIndices;
-	private boolean useClass;
+	private ArrayList<Integer> ignoredIndices;
 	
 	public DataSet(String filename, Integer labelIndex, Integer classIndex,
-			Integer[] ignoreIndices, boolean useClass) {
+			Integer[] ignored) {
 		
 		this.filename = filename;
 		this.labelIndex = labelIndex;
 		this.classIndex = classIndex;
-		this.ignoreIndices = ignoreIndices;
-		this.useClass = useClass;
+		this.ignoredIndices = new ArrayList<Integer>(Arrays.asList(ignored));
 	}
 	
-	public DataSet(String filename, Integer ignored) {
-		
-		this.filename = filename;
-		this.labelIndex = null;
-		this.classIndex = null;
-		this.ignoreIndices = new Integer[]{ignored};
-	}
-
 	public String getFilename() {
 		return filename;
 	}
@@ -38,11 +31,8 @@ public class DataSet {
 		return classIndex;
 	}
 
-	public Integer[] getIgnoreIndices() {
-		return ignoreIndices;
-	}
-
-	public boolean isUseClass() {
-		return useClass;
+	public ArrayList<Integer> getIgnoreIndices() {
+		
+		return ignoredIndices;
 	}
 }

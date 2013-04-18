@@ -13,16 +13,6 @@ public class MainView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int PANELS_WIDTH = 700;
-	private static final int RESULTS_WIDTH = 300;
-	
-	private static final int TOP_PANEL_HEIGHT= 50;
-	private static final int MIDDLE_PANEL_HEIGHT= 400;
-	private static final int BOTTOM_PANEL_HEIGHT= 150;
-	
-	private static final int MIN_SIZE = 100;
-	private static final int MAX_SIZE = Short.MAX_VALUE;
-
 	protected JPanel mainPanel;
 	
 	protected JPanel topPanel;
@@ -54,38 +44,38 @@ public class MainView extends JFrame {
 		eastPanel = new JPanel();
 		eastTopPanel = new JPanel();
 		
-		topPanel.setPreferredSize(new Dimension(PANELS_WIDTH, TOP_PANEL_HEIGHT));
-		topPanel.setSize(new Dimension(PANELS_WIDTH, TOP_PANEL_HEIGHT));
-		topPanel.setMinimumSize(new Dimension(MIN_SIZE, TOP_PANEL_HEIGHT));
-		topPanel.setMaximumSize(new Dimension(MAX_SIZE, TOP_PANEL_HEIGHT));
+		topPanel.setPreferredSize(new Dimension(ViewParameters.PANELS_WIDTH, ViewParameters.TOP_PANEL_HEIGHT));
+		topPanel.setSize(new Dimension(ViewParameters.PANELS_WIDTH, ViewParameters.TOP_PANEL_HEIGHT));
+		topPanel.setMinimumSize(new Dimension(ViewParameters.MIN_SIZE, ViewParameters.TOP_PANEL_HEIGHT));
+		topPanel.setMaximumSize(new Dimension(ViewParameters.MAX_SIZE, ViewParameters.TOP_PANEL_HEIGHT));
 		topPanel.setLayout(new GridLayout(1,1));
 		topPanel.setBorder(BorderFactory.createEtchedBorder());
 		
-		middlePanel.setPreferredSize(new Dimension(PANELS_WIDTH, MIDDLE_PANEL_HEIGHT));
-		middlePanel.setSize(new Dimension(PANELS_WIDTH, MIDDLE_PANEL_HEIGHT));
-		middlePanel.setMinimumSize(new Dimension(MIN_SIZE, MIN_SIZE));
-		middlePanel.setMaximumSize(new Dimension(MAX_SIZE, MAX_SIZE));
+		middlePanel.setPreferredSize(new Dimension(ViewParameters.PANELS_WIDTH, ViewParameters.MIDDLE_PANEL_HEIGHT));
+		middlePanel.setSize(new Dimension(ViewParameters.PANELS_WIDTH, ViewParameters.MIDDLE_PANEL_HEIGHT));
+		middlePanel.setMinimumSize(new Dimension(ViewParameters.MIN_SIZE,ViewParameters. MIN_SIZE));
+		middlePanel.setMaximumSize(new Dimension(ViewParameters.MAX_SIZE, ViewParameters.MAX_SIZE));
 		middlePanel.setLayout(new GridLayout(1,1));
 		middlePanel.setBorder(BorderFactory.createEtchedBorder());
 		
-		bottomPanel.setPreferredSize(new Dimension(PANELS_WIDTH, BOTTOM_PANEL_HEIGHT));
-		bottomPanel.setSize(new Dimension(PANELS_WIDTH, BOTTOM_PANEL_HEIGHT));
-		bottomPanel.setMinimumSize(new Dimension(MIN_SIZE, MIN_SIZE));
-		bottomPanel.setMaximumSize(new Dimension(MAX_SIZE, MAX_SIZE));
+		bottomPanel.setPreferredSize(new Dimension(ViewParameters.PANELS_WIDTH, ViewParameters.BOTTOM_PANEL_HEIGHT));
+		bottomPanel.setSize(new Dimension(ViewParameters.PANELS_WIDTH, ViewParameters.BOTTOM_PANEL_HEIGHT));
+		bottomPanel.setMinimumSize(new Dimension(ViewParameters.MIN_SIZE, ViewParameters.MIN_SIZE));
+		bottomPanel.setMaximumSize(new Dimension(ViewParameters.MAX_SIZE, ViewParameters.MAX_SIZE));
 		bottomPanel.setLayout(new GridLayout(1,1));
 		bottomPanel.setBorder(BorderFactory.createEtchedBorder());
 		
-		eastPanel.setPreferredSize(new Dimension(RESULTS_WIDTH, MIN_SIZE));
-		eastPanel.setSize(new Dimension(RESULTS_WIDTH, MIN_SIZE));
-		eastPanel.setMinimumSize(new Dimension(MIN_SIZE, MIN_SIZE));
-		eastPanel.setMaximumSize(new Dimension(RESULTS_WIDTH, MAX_SIZE));
+		eastPanel.setPreferredSize(new Dimension(ViewParameters.RESULTS_WIDTH, ViewParameters.MIN_SIZE));
+		eastPanel.setSize(new Dimension(ViewParameters.RESULTS_WIDTH, ViewParameters.MIN_SIZE));
+		eastPanel.setMinimumSize(new Dimension(ViewParameters.MIN_SIZE, ViewParameters.MIN_SIZE));
+		eastPanel.setMaximumSize(new Dimension(ViewParameters.RESULTS_WIDTH, ViewParameters.MAX_SIZE));
 		eastPanel.setLayout(new GridLayout(1,1));
 		eastPanel.setBorder(BorderFactory.createEtchedBorder());
 		
-		eastTopPanel.setPreferredSize(new Dimension(RESULTS_WIDTH, TOP_PANEL_HEIGHT));
-		eastTopPanel.setSize(new Dimension(RESULTS_WIDTH, TOP_PANEL_HEIGHT));
-		eastTopPanel.setMinimumSize(new Dimension(MIN_SIZE, TOP_PANEL_HEIGHT));
-		eastTopPanel.setMaximumSize(new Dimension(RESULTS_WIDTH, TOP_PANEL_HEIGHT));
+		eastTopPanel.setPreferredSize(new Dimension(ViewParameters.RESULTS_WIDTH, ViewParameters.TOP_PANEL_HEIGHT));
+		eastTopPanel.setSize(new Dimension(ViewParameters.RESULTS_WIDTH, ViewParameters.TOP_PANEL_HEIGHT));
+		eastTopPanel.setMinimumSize(new Dimension(ViewParameters.MIN_SIZE, ViewParameters.TOP_PANEL_HEIGHT));
+		eastTopPanel.setMaximumSize(new Dimension(ViewParameters.RESULTS_WIDTH, ViewParameters.TOP_PANEL_HEIGHT));
 		eastTopPanel.setLayout(new GridLayout(1,1));
 		eastTopPanel.setBorder(BorderFactory.createEtchedBorder());
 		
