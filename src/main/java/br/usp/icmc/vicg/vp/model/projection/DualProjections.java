@@ -3,9 +3,12 @@ package br.usp.icmc.vicg.vp.model.projection;
 import java.util.ArrayList;
 
 import matrix.AbstractMatrix;
+import projection.model.ProjectionInstance;
 import projection.model.ProjectionModel;
 import projection.model.ProjectionModel.InstanceType;
+import projection.model.Scalar;
 import visualizationbasics.color.ColorScaleFactory.ColorScaleType;
+import visualizationbasics.model.AbstractInstance;
 
 public class DualProjections  {
 
@@ -34,11 +37,22 @@ public class DualProjections  {
 		projModel.addProjection(projection, InstanceType.CIRCLED_INSTANCE, 5);
 		projModel.changeColorScaleType(ColorScaleType.ORANGE_TO_BLUESKY);
 		
-		projModel.addScalar("stress", stress);
+		Scalar scalar = projModel.addScalar("stress");
+
+		for (AbstractInstance pi : projModel.getInstances()) {
+
+			((ProjectionInstance) pi).setScalarValue(scalar, stress.get(pi.getId()));
+		}
 		
 		if (scalarName != null) {
 			
-			projModel.setSelectedScalar(projModel.getScalar(scalarName));
+			for (Scalar s : projModel.getScalars()) {
+
+				if (s.getName().equals(scalarName)) {
+
+					projModel.setSelectedScalar(s);
+				}
+			}
 		}
 		
 		return projModel;

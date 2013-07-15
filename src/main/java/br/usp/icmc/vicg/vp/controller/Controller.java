@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import projection.model.ProjectionModel;
+import projection.model.Scalar;
 import visualizationbasics.model.AbstractInstance;
 import br.usp.icmc.vicg.vp.model.data.DataMatrix;
 import br.usp.icmc.vicg.vp.model.ml.ResultFactory;
@@ -209,7 +210,14 @@ public class Controller {
 
 	private void setModelScalar(ProjectionModel model, String name) {
 
-		model.setSelectedScalar(model.getScalar(name));
+		for (Scalar s : model.getScalars()) {
+
+			if (s.getName().equals(name)) {
+
+				model.setSelectedScalar(s);
+			}
+		}
+		
 		model.setChanged();
 		model.notifyObservers();
 	}
