@@ -9,7 +9,7 @@ import br.usp.icmc.vicg.vp.model.data.DataSets;
 import br.usp.icmc.vicg.vp.view.MainView;
 
 public class App {
-
+	
 	public static void main(String[] args) throws Exception {
 
 		MainView view = new MainView();
@@ -36,7 +36,7 @@ public class App {
 		}
 		else {
 			
-			dataset = DataSets.wine;
+			dataset = DataSets.iris;
 		}
 		
 		DataMatrix data = new DataMatrix(dataset);

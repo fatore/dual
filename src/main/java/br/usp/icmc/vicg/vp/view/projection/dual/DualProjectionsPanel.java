@@ -7,6 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import projection.model.ProjectionModel;
+import projection.view.ProjectionFrame;
 import projection.view.selection.InstanceSelection;
 import br.usp.icmc.vicg.vp.model.projection.DualProjections;
 import br.usp.icmc.vicg.vp.view.projection.RichProjectionPanel;
@@ -34,8 +35,8 @@ public class DualProjectionsPanel extends JPanel {
 		
 		this.removeAll();
 		
-		this.add(dimsPanel);
 		this.add(itemsPanel);
+		this.add(dimsPanel);
 	}
 	
 	private RichProjectionPanel createProjectionPanel(ProjectionModel projModel, 
