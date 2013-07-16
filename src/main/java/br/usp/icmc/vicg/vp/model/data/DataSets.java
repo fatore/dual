@@ -21,7 +21,7 @@ public class DataSets {
 			dataFolder + "attributes.csv", 0, null, new Integer[]{0});
 	
 	public static DataSet iris = new DataSet(
-			dataFolder + "Iris.csv", null, 4, new Integer[]{4});
+			dataFolder + "Iris.csv", null, null, new Integer[]{});
 	
 	public static DataSet wine = new DataSet(
 			dataFolder + "wine.csv", null, 13, new Integer[]{13});

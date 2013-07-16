@@ -244,8 +244,8 @@ public class DataMatrix extends DenseMatrix {
 			}
 		}
 
-		boolean classAdded = classSelected && this.ignoredCols.contains(this.classIndex);
 		// Okay, now check if it was added or was already there
+		boolean classAdded = classSelected && this.ignoredCols.contains(this.classIndex);
 		
 		int valuesSize = selCols.size();
 		if (classAdded) valuesSize--;

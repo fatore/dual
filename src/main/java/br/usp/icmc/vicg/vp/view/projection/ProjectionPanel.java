@@ -29,11 +29,6 @@ public class ProjectionPanel extends InterativePanel {
 		this.setScalar(model);
 		
 		this.addMouseMotionListener(new HoverLabelListener());
-		
-//		for (AbstractInstance pi : model.getInstances()) {
-//			
-//			((ProjectionInstance) pi).setShowLabel(true);
-//		}
 	}
 	
 	public void setScalar(ProjectionModel model) {
